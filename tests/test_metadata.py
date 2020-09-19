@@ -1,9 +1,9 @@
-import xarray_accessors as demo
+import xarray_accessors
 
 
 def test_author():
-    assert demo.__author__ == "Akio Taniguchi"
+    assert xarray_accessors.__author__ == "Akio Taniguchi"
 
 
 def test_version():
-    assert demo.__version__ == "0.1.0"
+    assert xarray_accessors.__version__ == "0.1.0"
