@@ -1,6 +1,7 @@
 __all__ = [
     "get_nested_attr",
     "set_nested_attr",
+    "del_nested_attr",
 ]
 
 
@@ -84,3 +85,29 @@ def set_nested_attr(obj: Any, names: Sequence[str], value: Any) -> None:
     else:
         setattr(get_nested_attr(obj, names[:-1]), names[-1], value)
 
+
+def del_nested_attr(obj: Any, names: Sequence[str]) -> None:
+    """Remove a nested attribute from the given object.
+
+    `del_nested_attr(x, ['y', 'z'])` is equivalent to `del x.y.z`.
+
+    Args:
+        obj: Object to be evaluated.
+        names: Sequence of attribute names.
+
+    Raises:
+        AttributeError: Raised if the nested attribute does not exist.
+        ValueError: Raised if `names` is an invalid object
+            (e.g., a string, an empty list or tuple).
+
+    """
+    if not isinstance(names, (list, tuple)):
+        raise ValueError("Names must be a sequence of strings.")
+
+    if len(names) == 0:
+        raise ValueError("At least one name must be specified.")
+
+    if len(names) == 1:
+        delattr(obj, names[0])
+    else:
+        delattr(get_nested_attr(obj, names[:-1]), names[-1])
