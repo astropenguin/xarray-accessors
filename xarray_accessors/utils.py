@@ -1,5 +1,6 @@
 __all__ = [
     "get_nested_attr",
+    "set_nested_attr",
 ]
 
 
@@ -54,4 +55,32 @@ def get_nested_attr(obj: Any, names: Sequence[str], default: Any = MISSING) -> A
         return nested_obj
     else:
         return get_nested_attr(nested_obj, names, default)
+
+
+def set_nested_attr(obj: Any, names: Sequence[str], value: Any) -> None:
+    """Set a nested attribute on the given object to the given value.
+
+    `set_nested_attr(x, ['y', 'z'], v)` is equivalent to `x.y.z = v`.
+
+    Args:
+        obj: Object to be evaluated.
+        names: Sequence of attribute names.
+        values: Value to be set as the nested attribute.
+
+    Raises:
+        AttributeError: Raised if the nested attribute does not exist.
+        ValueError: Raised if `names` is an invalid object
+            (e.g., a string, an empty list or tuple).
+
+    """
+    if not isinstance(names, (list, tuple)):
+        raise ValueError("Names must be a sequence of strings.")
+
+    if len(names) == 0:
+        raise ValueError("At least one name must be specified.")
+
+    if len(names) == 1:
+        setattr(obj, names[0], value)
+    else:
+        setattr(get_nested_attr(obj, names[:-1]), names[-1], value)
 
