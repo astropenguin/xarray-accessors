@@ -1,0 +1,18 @@
+xarray\_accessors package
+=========================
+
+Submodules
+----------
+
+.. toctree::
+   :maxdepth: 4
+
+   xarray_accessors.utils
+
+Module contents
+---------------
+
+.. automodule:: xarray_accessors
+   :members:
+   :undoc-members:
+   :show-inheritance:
