@@ -23,7 +23,7 @@ MISSING: Missing = Missing()  #: An instance for missing value.
 def get_nested_attr(obj: Any, names: Sequence[str], default: Any = MISSING) -> Any:
     """Get a nested attribute from the given object.
 
-    `get_nested_attr(x, ['y', 'z'])` is equivalent to `x.y.z`.
+    ``get_nested_attr(x, ['y', 'z'])`` is equivalent to ``x.y.z``.
 
     Args:
         obj: Object to be evaluated.
@@ -36,8 +36,8 @@ def get_nested_attr(obj: Any, names: Sequence[str], default: Any = MISSING) -> A
 
     Raises:
         AttributeError: Raised if the nested attribute
-            does not exist and `default` is not specified.
-        ValueError: Raised if `names` is an invalid object
+            does not exist and ``default`` is not specified.
+        ValueError: Raised if ``names`` is an invalid object
             (e.g., a string, an empty list or tuple).
 
     """
@@ -62,7 +62,7 @@ def get_nested_attr(obj: Any, names: Sequence[str], default: Any = MISSING) -> A
 def set_nested_attr(obj: Any, names: Sequence[str], value: Any) -> None:
     """Set a nested attribute on the given object to the given value.
 
-    `set_nested_attr(x, ['y', 'z'], v)` is equivalent to `x.y.z = v`.
+    ``set_nested_attr(x, ['y', 'z'], v)`` is equivalent to ``x.y.z = v``.
 
     Args:
         obj: Object to be evaluated.
@@ -71,7 +71,7 @@ def set_nested_attr(obj: Any, names: Sequence[str], value: Any) -> None:
 
     Raises:
         AttributeError: Raised if the nested attribute does not exist.
-        ValueError: Raised if `names` is an invalid object
+        ValueError: Raised if ``names`` is an invalid object
             (e.g., a string, an empty list or tuple).
 
     """
@@ -90,7 +90,7 @@ def set_nested_attr(obj: Any, names: Sequence[str], value: Any) -> None:
 def del_nested_attr(obj: Any, names: Sequence[str]) -> None:
     """Remove a nested attribute from the given object.
 
-    `del_nested_attr(x, ['y', 'z'])` is equivalent to `del x.y.z`.
+    ``del_nested_attr(x, ['y', 'z'])`` is equivalent to ``del x.y.z``.
 
     Args:
         obj: Object to be evaluated.
@@ -98,7 +98,7 @@ def del_nested_attr(obj: Any, names: Sequence[str]) -> None:
 
     Raises:
         AttributeError: Raised if the nested attribute does not exist.
-        ValueError: Raised if `names` is an invalid object
+        ValueError: Raised if ``names`` is an invalid object
             (e.g., a string, an empty list or tuple).
 
     """
@@ -122,11 +122,11 @@ def has_nested_attr(obj: Any, names: Sequence[str]) -> bool:
         names: Sequence of attribute names.
 
     Returns:
-        `True` if the object has the nested attribute. `False` otherwise.
+        ``True`` if the object has the nested attribute. ``False`` otherwise.
 
     Raises:
         AttributeError: Raised if the nested attribute does not exist.
-        ValueError: Raised if `names` is an invalid object
+        ValueError: Raised if ``names`` is an invalid object
             (e.g., a string, an empty list or tuple).
 
     """
