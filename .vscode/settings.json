@@ -1,5 +1,6 @@
 {
     "editor.formatOnSave": true,
+    "python.analysis.typeCheckingMode": "strict",
     "python.formatting.provider": "black",
     "python.languageServer": "Pylance",
     "python.linting.enabled": true,
