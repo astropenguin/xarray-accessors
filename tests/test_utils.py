@@ -1,10 +1,13 @@
-# dependencies
+# third-party dependencies
 from pytest import raises
+
+
+# submodules
 from xarray_accessors.utils import (
-    get_nested_attr,
-    set_nested_attr,
     del_nested_attr,
+    get_nested_attr,
     has_nested_attr,
+    set_nested_attr,
 )
 
 
@@ -14,34 +17,34 @@ class Data:
 
 
 data = Data()
-data.a = Data()
-data.a.b = Data()
-data.a.b.c = "data"
+data.a = Data()  # type: ignore
+data.a.b = Data()  # type: ignore
+data.a.b.c = "data"  # type: ignore
 
 
 # test functions
-def test_get_nested_attr():
-    names = ("a", "b", "c")
-    expected = data.a.b.c
-    assert get_nested_attr(data, names) == expected
-
-
-def test_set_nested_attr():
-    names = ("a", "b", "d")
-    expected = "data"
-    set_nested_attr(data, names, expected)
-    assert data.a.b.d == expected
-
-
-def test_del_nested_attr():
+def test_del_nested_attr() -> None:
     names = ("a", "b", "e")
-    data.a.b.e = "data"
+    data.a.b.e = "data"  # type: ignore
     del_nested_attr(data, names)
 
     with raises(AttributeError):
-        data.a.b.e
+        data.a.b.e  # type: ignore
 
 
-def test_has_nested_attr():
+def test_get_nested_attr() -> None:
+    names = ("a", "b", "c")
+    expected = data.a.b.c  # type: ignore
+    assert get_nested_attr(data, names) == expected
+
+
+def test_has_nested_attr() -> None:
     names = ("a", "b", "c")
     assert has_nested_attr(data, names)
+
+
+def test_set_nested_attr() -> None:
+    names = ("a", "b", "d")
+    expected = "data"
+    set_nested_attr(data, names, expected)
+    assert data.a.b.d == expected  # type: ignore

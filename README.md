@@ -5,4 +5,4 @@
 [![Test](https://img.shields.io/github/workflow/status/astropenguin/xarray-accessors/Test?logo=github&label=Test&style=flat-square)](https://github.com/astropenguin/xarray-accessors/actions)
 [![License](https://img.shields.io/badge/license-MIT-blue.svg?label=License&style=flat-square)](LICENSE)
 
-xarray extension for dataarray accessors
+xarray extension for easy accessor creation

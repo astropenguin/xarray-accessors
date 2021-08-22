@@ -1,9 +1,11 @@
-import xarray_accessors
+# submodule
+from xarray_accessors import __author__, __version__
 
 
-def test_author():
-    assert xarray_accessors.__author__ == "Akio Taniguchi"
+# test functions
+def test_author() -> None:
+    assert __author__ == "Akio Taniguchi"
 
 
-def test_version():
-    assert xarray_accessors.__version__ == "0.1.0"
+def test_version() -> None:
+    assert __version__ == "0.1.0"
