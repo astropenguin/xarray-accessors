@@ -1,8 +1,8 @@
 __all__ = [
-    "get_nested_attr",
-    "set_nested_attr",
     "del_nested_attr",
+    "get_nested_attr",
     "has_nested_attr",
+    "set_nested_attr",
 ]
 
 
@@ -20,6 +20,30 @@ MISSING: Missing = Missing()
 
 
 # runtime functions
+def del_nested_attr(obj: Any, names: Sequence[str]) -> None:
+    """Remove a nested attribute from the given object.
+
+    ``del_nested_attr(x, ['y', 'z'])`` is equivalent to ``del x.y.z``.
+
+    Args:
+        obj: Object to be evaluated.
+        names: Sequence of attribute names.
+
+    Raises:
+        AttributeError: Raised if the nested attribute does not exist.
+        ValueError: Raised if ``names`` is an invalid object
+            (e.g., a string, an empty list or tuple).
+
+    """
+    if len(names) == 0:
+        raise ValueError("At least one name must be specified.")
+
+    if len(names) == 1:
+        delattr(obj, names[0])
+    else:
+        delattr(get_nested_attr(obj, names[:-1]), names[-1])
+
+
 def get_nested_attr(obj: Any, names: Sequence[str], default: Any = MISSING) -> Any:
     """Get a nested attribute from the given object.
 
@@ -55,6 +79,29 @@ def get_nested_attr(obj: Any, names: Sequence[str], default: Any = MISSING) -> A
         return get_nested_attr(attr, names[1:], default)
 
 
+def has_nested_attr(obj: Any, names: Sequence[str]) -> bool:
+    """Return whether an object has a nested attribute.
+
+    Args:
+        obj: Object to be evaluated.
+        names: Sequence of attribute names.
+
+    Returns:
+        ``True`` if the object has the nested attribute. ``False`` otherwise.
+
+    Raises:
+        AttributeError: Raised if the nested attribute does not exist.
+        ValueError: Raised if ``names`` is an invalid object
+            (e.g., a string, an empty list or tuple).
+
+    """
+    try:
+        get_nested_attr(obj, names)
+        return True
+    except AttributeError:
+        return False
+
+
 def set_nested_attr(obj: Any, names: Sequence[str], value: Any) -> None:
     """Set a nested attribute on the given object to the given value.
 
@@ -78,50 +125,3 @@ def set_nested_attr(obj: Any, names: Sequence[str], value: Any) -> None:
         setattr(obj, names[0], value)
     else:
         setattr(get_nested_attr(obj, names[:-1]), names[-1], value)
-
-
-def del_nested_attr(obj: Any, names: Sequence[str]) -> None:
-    """Remove a nested attribute from the given object.
-
-    ``del_nested_attr(x, ['y', 'z'])`` is equivalent to ``del x.y.z``.
-
-    Args:
-        obj: Object to be evaluated.
-        names: Sequence of attribute names.
-
-    Raises:
-        AttributeError: Raised if the nested attribute does not exist.
-        ValueError: Raised if ``names`` is an invalid object
-            (e.g., a string, an empty list or tuple).
-
-    """
-    if len(names) == 0:
-        raise ValueError("At least one name must be specified.")
-
-    if len(names) == 1:
-        delattr(obj, names[0])
-    else:
-        delattr(get_nested_attr(obj, names[:-1]), names[-1])
-
-
-def has_nested_attr(obj: Any, names: Sequence[str]) -> bool:
-    """Return whether an object has a nested attribute.
-
-    Args:
-        obj: Object to be evaluated.
-        names: Sequence of attribute names.
-
-    Returns:
-        ``True`` if the object has the nested attribute. ``False`` otherwise.
-
-    Raises:
-        AttributeError: Raised if the nested attribute does not exist.
-        ValueError: Raised if ``names`` is an invalid object
-            (e.g., a string, an empty list or tuple).
-
-    """
-    try:
-        get_nested_attr(obj, names)
-        return True
-    except AttributeError:
-        return False
