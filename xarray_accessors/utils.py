@@ -16,10 +16,10 @@ class Missing:
         return "<MISSING>"
 
 
-MISSING: Missing = Missing()  #: An instance for missing value.
+MISSING: Missing = Missing()
 
 
-# main features
+# runtime functions
 def get_nested_attr(obj: Any, names: Sequence[str], default: Any = MISSING) -> Any:
     """Get a nested attribute from the given object.
 
@@ -41,22 +41,18 @@ def get_nested_attr(obj: Any, names: Sequence[str], default: Any = MISSING) -> A
             (e.g., a string, an empty list or tuple).
 
     """
-    if not isinstance(names, (list, tuple)):
-        raise ValueError("Names must be a sequence of strings.")
-
     if len(names) == 0:
         raise ValueError("At least one name must be specified.")
 
-    name, names = names[0], names[1:]
-    nested_obj = getattr(obj, name, default)
+    attr = getattr(obj, names[0], default)
 
-    if nested_obj is MISSING:
-        raise AttributeError(f"{obj} has no attribute '{name}'.")
+    if attr is MISSING:
+        raise AttributeError(f"{obj!r} has no attribute {names[0]!r}.")
 
-    if len(names) == 0:
-        return nested_obj
+    if len(names) == 1:
+        return attr
     else:
-        return get_nested_attr(nested_obj, names, default)
+        return get_nested_attr(attr, names[1:], default)
 
 
 def set_nested_attr(obj: Any, names: Sequence[str], value: Any) -> None:
@@ -75,9 +71,6 @@ def set_nested_attr(obj: Any, names: Sequence[str], value: Any) -> None:
             (e.g., a string, an empty list or tuple).
 
     """
-    if not isinstance(names, (list, tuple)):
-        raise ValueError("Names must be a sequence of strings.")
-
     if len(names) == 0:
         raise ValueError("At least one name must be specified.")
 
@@ -102,9 +95,6 @@ def del_nested_attr(obj: Any, names: Sequence[str]) -> None:
             (e.g., a string, an empty list or tuple).
 
     """
-    if not isinstance(names, (list, tuple)):
-        raise ValueError("Names must be a sequence of strings.")
-
     if len(names) == 0:
         raise ValueError("At least one name must be specified.")
 
