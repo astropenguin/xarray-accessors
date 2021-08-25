@@ -15,11 +15,7 @@ Function = Callable[..., Any]
 
 
 # constants
-RESERVED_NAMES = (
-    "_accessed",
-    "_accessors",
-    "_functions",
-)
+RESERVED_NAMES = ("_accessed", "_accessors", "_functions")
 
 
 # runtime classes
