@@ -40,17 +40,14 @@ class AccessorMeta(type):
 
     def __getattr__(cls, name: str) -> Union[Accessor, Function]:
         """Return an accessor class or a function."""
-        if name not in cls._accessors:
-            setattr(cls, name, type(name, (AccessorBase,), {}))
-
         if name in cls._accessors:
             return cls._accessors[name]
 
         if name in cls._functions:
             return cls._functions[name]
 
-        cname = cls.__name__
-        raise AttributeError(f"Type object {cname!r} has no attribute {name!r}.")
+        setattr(cls, name, type(name, (AccessorBase,), {}))
+        return cls._accessors[name]
 
     def __setattr__(cls, name: str, value: Union[Accessor, Function]) -> None:
         """Set an accessor class or a function to the instance."""
