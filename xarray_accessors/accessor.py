@@ -69,12 +69,13 @@ class AccessorMeta(type):
 class AccessorBase(metaclass=AccessorMeta):
     """Base class for DataArray and Dataset accessors."""
 
+    _accessed: Union[xr.DataArray, xr.Dataset]  #: Accessed data.
     _accessors: ClassVar[Dict[str, Accessor]]  #: Nested accessors.
     _functions: ClassVar[Dict[str, Function]]  #: Data functions.
 
     def __init__(self, data: Union[xr.DataArray, xr.Dataset]) -> None:
         """Initialize an instance by binding data."""
-        self._accessed = data
+        super().__setattr__("_accessed", data)
 
     def __dir__(self) -> List[str]:
         """Return the union namespace of accessors and functions."""
@@ -96,3 +97,7 @@ class AccessorBase(metaclass=AccessorMeta):
 
         cname = type(self).__name__
         raise AttributeError(f"{cname!r} object has no attribute {name!r}.")
+
+    def __setattr__(self, name: str, value: Any) -> None:
+        """Disallow setting a value to the instance."""
+        raise AttributeError("Cannot set a value to the instance.")
