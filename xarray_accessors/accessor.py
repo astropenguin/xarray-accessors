@@ -1,6 +1,7 @@
 # standard library
 from functools import wraps
-from types import MethodType
+from inspect import isclass
+from types import FunctionType, MethodType
 from typing import Any, Callable, ClassVar, Dict, List, Type, Union
 
 
@@ -11,6 +12,14 @@ import xarray as xr
 # type hints
 Accessor = Type["AccessorBase"]
 Function = Callable[..., Any]
+
+
+# constants
+RESERVED_NAMES = (
+    "_accessed",
+    "_accessors",
+    "_functions",
+)
 
 
 # runtime classes
@@ -32,7 +41,7 @@ class AccessorMeta(type):
     def __getattr__(cls, name: str) -> Union[Accessor, Function]:
         """Return an accessor class or a function."""
         if name not in cls._accessors:
-            cls._accessors[name] = type(name, (AccessorBase,), {})
+            setattr(cls, name, type(name, (AccessorBase,), {}))
 
         if name in cls._accessors:
             return cls._accessors[name]
@@ -42,6 +51,19 @@ class AccessorMeta(type):
 
         cname = cls.__name__
         raise AttributeError(f"Type object {cname!r} has no attribute {name!r}.")
+
+    def __setattr__(cls, name: str, value: Union[Accessor, Function]) -> None:
+        """Set an accessor class or a function to the instance."""
+        if name in RESERVED_NAMES:
+            return super().__setattr__(name, value)
+
+        if isclass(value) and issubclass(value, AccessorBase):
+            return cls._accessors.update({name: value})
+
+        if isinstance(value, FunctionType):
+            return cls._functions.update({name: value})
+
+        raise TypeError("Value must be either an accessor or a function.")
 
 
 class AccessorBase(metaclass=AccessorMeta):
